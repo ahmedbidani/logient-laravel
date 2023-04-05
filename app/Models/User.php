@@ -41,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+     /**
+     * Get the links for the user.
+     */
+    public function links(): HasMany
+    {
+        return $this->hasMany(Link::class);
+    }
 }
