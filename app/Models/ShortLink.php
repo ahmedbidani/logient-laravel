@@ -26,6 +26,17 @@ class ShortLink extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the short link with domain
+     */
+    protected function fullUrl(): Attribute
+    {
+        dd('testing');
+        return Attribute::make(
+            get: fn (string $value, array $attributes) => 'http://localhost/' . $attributes['short_url'],
+        );
+    }
+
     public static function cleanExpiredShortLinks()
     {
         $expiredLinks = ShortLink::where('expires_at', '<=', now())->get();

@@ -4,9 +4,14 @@
             {{ __('Links') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if ($message = Session::get('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-2" role="alert">
+                    <strong class="font-bold">Fully Done :)</strong>
+                    <span class="block sm:inline">{{ $message }}</span>
+                </div>
+            @endif
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <a href="{{ route('links.create') }}"
@@ -17,9 +22,6 @@
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Name
-                                    </th>
                                     <th scope="col" class="px-6 py-3">
                                         Url
                                     </th>
@@ -39,39 +41,38 @@
                             </thead>
                             <tbody>
                                 @foreach($links as $link)
-                                    <tr>
-                                        <th scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$link->user->name}}
-                                        </th>
-                                        <td class="px-6 py-4">
+                                <tr>
+                                    <td class="px-6 py-4">
+                                        <a href="{{ url($link->url) }}" target="_blank" class="text-blue-600 underline">
                                             {{ $link->url }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <a href="{{ url($link->url) }}" target="_blank"> {{ $link->url }}{{$link->short_url}}</a>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $link->created_at }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <a href="{{ route('links.edit',$link->id) }}"
-                                                class="px-4 py-1 text-sm text-blue-600 bg-blue-200 rounded-full">Edit</a>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <form action="{{ route('links.destroy', $link->id) }}" method="Post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-link btn-sm btn-rounded px-4 py-1 text-sm text-red-400 bg-red-200 rounded-full">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a href="{{ url($link->url) }}" target="_blank" class="text-blue-600 underline">
+                                            {{ 'http://localhost/' . $link->short_url }}</a>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $link->created_at }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a href="{{ route('links.edit',$link->id) }}"
+                                            class="px-4 py-1 text-sm text-blue-600 bg-blue-200 rounded-full">Edit</a>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <form action="{{ route('links.destroy', $link->id) }}" method="Post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn btn-link btn-sm btn-rounded px-4 py-1 text-sm text-red-400 bg-red-200 rounded-full">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>

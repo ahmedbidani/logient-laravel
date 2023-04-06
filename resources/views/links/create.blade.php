@@ -27,7 +27,7 @@
                             <div>
                                 <x-input-label for="url" :value="__('Url')" />
                                 <x-text-input id="url" name="url" type="text"
-                                    class="mt-1 block w-full" autocomplete="url" />
+                                    class="mt-1 block w-full" autocomplete="url" :value="old('url')"/>
                                 <x-input-error :messages="$errors->get('url')"
                                     class="mt-2" />
                             </div>
