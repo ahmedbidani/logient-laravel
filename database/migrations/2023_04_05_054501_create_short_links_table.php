@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('links', function (Blueprint $table) {
+        Schema::create('shortlinks', function (Blueprint $table) {
             $table->id();
             $table->string('url');
             $table->string('short_url')->unique();
-            $table->foreignId('user_id')->constrained('posts');
+            $table->foreignId('user_id')->constrained('users');
             $table->dateTime('expiry_at');
             $table->timestamps();
         });

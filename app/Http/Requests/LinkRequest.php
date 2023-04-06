@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
 
 class LinkRequest extends FormRequest
 {
@@ -11,7 +13,20 @@ class LinkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
+    }
+
+    /**
+     * Configure the validator instance.
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            $currentUser = Auth::user();
+            if ($currentUser->links()->count() >= 5) {
+                $validator->errors()->add('url', 'You can only have a maximum of 5 links.');
+            }
+        });
     }
 
     /**

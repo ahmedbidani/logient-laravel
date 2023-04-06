@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Link extends Model
+class ShortLink extends Model
 {
     use HasFactory;
+
+    protected $table = 'shortlinks';
+
+    protected $fillable = ['url','short_url','user_id', 'expiry_at'];
 
     protected $casts = [
         'expiry_at' => 'datetime'
@@ -20,5 +24,13 @@ class Link extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public static function cleanExpiredShortLinks()
+    {
+        $expiredLinks = ShortLink::where('expires_at', '<=', now())->get();
+        foreach ($expiredLinks as $link) {
+            $link->delete();
+        }
     }
 }
